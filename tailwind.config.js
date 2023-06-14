@@ -13,7 +13,11 @@ module.exports = {
             oswald: "Oswald, sans-serif",
             urbanist: "Urbanist, sans-serif"
         },
-        extend: {},
+        extend: {
+            boxShadow: {
+                'custom--1': "0.5px 0px 3px 3px rgba(0, 0, 0, 0.05)"
+            }
+        },
     },
     plugins: [],
 }
