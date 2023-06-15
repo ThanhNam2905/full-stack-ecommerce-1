@@ -42,7 +42,7 @@ const Header = () => {
             sticky z-20 top-0 transition-transform duration-300 ${show}`}>
             <Wrapper className="flex items-center justify-between h-[60px]">
                 <Link href={"/"}>
-                    <img src="./assets/logo.svg" alt="Logo Website" 
+                    <img src="/assets/logo.svg" alt="Logo Website" 
                         className='w-[40px] md:w-[65px]'/>
                 </Link>
 
