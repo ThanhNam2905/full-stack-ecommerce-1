@@ -1,4 +1,5 @@
 import ProductDetailCarousel from '@/components/ProductDetailCarousel'
+import RelatedProducts from '@/components/RelatedProducts'
 import Wrapper from '@/components/Wrapper'
 import React from 'react'
 import { BsHeart, BsCart2  } from "react-icons/bs"
@@ -124,6 +125,9 @@ const ProductDetail = () => {
                     </div>
                     {/* Right column end */}
                 </div>
+
+                {/* Related Products Carousel */}
+                <RelatedProducts/>
             </Wrapper>
         </div>
     )

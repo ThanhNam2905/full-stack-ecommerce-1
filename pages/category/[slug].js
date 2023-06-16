@@ -11,7 +11,7 @@ const CategoryPage = () => {
         <div className='w-full md:my-20'>
             <Wrapper>
                 <div className="text-center max-w-[800px] mx-auto mt-10 md:mt-0">
-                    <h3 className="text-[28px] md:text-[34px] font-semibold mb-5 md:mb-7 leading-tight">Sneakers Shoes</h3>
+                    <h3 className="text-[28px] md:text-[34px] font-semibold mb-5 md:mb-7 leading-tight capitalize">Sneakers Shoes</h3>
                 </div>
 
                 {/* Product List start */}
