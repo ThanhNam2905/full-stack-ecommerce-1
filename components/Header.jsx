@@ -72,18 +72,21 @@ const Header = () => {
                     {/* Heart Icon end */}
 
                     {/* Cart Icon start */}
-                    <div className='relative flex items-center justify-center cursor-pointer w-8 md:w-12 h-8 md:h-12 
-                        transition-all ease-linear duration-300 hover:bg-black/[0.1] rounded-full'>
-                        <BsCart2 className='text-[16px] md:text-[22px]'/>
-                        <span className='h-[16px] md:h-[19px] min-w-[16px] md:min-w-[19px] absolute top-1 left-5 md:left-7 bg-red-600 text-white
-                            flex items-center justify-center text-[11px] md:text-[12px] rounded-full px-[2px] md:px-[5px]'>
-                                5
-                        </span>
-                    </div>
+                    <Link href={"/cart"}>
+                        <div className='relative flex items-center justify-center cursor-pointer w-8 md:w-12 h-8 md:h-12 
+                            transition-all ease-linear duration-300 hover:bg-black/[0.1] rounded-full'>
+                            <BsCart2 className='text-[16px] md:text-[22px]'/>
+                            <span className='h-[16px] md:h-[19px] min-w-[16px] md:min-w-[19px] absolute top-1 left-5 md:left-7 bg-red-600 text-white
+                                flex items-center justify-center text-[11px] md:text-[12px] rounded-full px-[2px] md:px-[5px]'>
+                                    5
+                            </span>
+                        </div>
+                    </Link>
+                    
                     {/* Cart Icon end */}
 
                     {/* Mobile menu start */}
-                    <div className='relative flex items-center justify-center cursor-pointer w-8 md:w-12 h-8 md:h-12 
+                    <div className='relative flex md:hidden items-center justify-center cursor-pointer w-8 md:w-12 h-8 md:h-12 
                         transition-all ease-linear duration-300 hover:bg-black/[0.1] rounded-full -mr-2'>
                         { mobileMenu ? (
                             <VscChromeClose 
