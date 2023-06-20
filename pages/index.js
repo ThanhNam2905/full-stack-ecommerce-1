@@ -24,7 +24,7 @@ export default function Home({products}) {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-8 px-5 md:px-0 my-11 md:my-14">
                     { 
                         products?.data?.map((product) => (
-                            <ProductCard key={product?.id + 1} data={product}/>
+                            <ProductCard key={product?.id} data={product}/>
                         ))
                     }
                 </div>
