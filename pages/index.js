@@ -1,12 +1,14 @@
 import ProductCard from "@/components/ProductCard";
 import SliderBanner from "@/components/SliderBanner";
 import Wrapper from "@/components/Wrapper";
+import { fetchDataFromAPI } from "@/utils/api";
+import React, { useEffect, useState } from "react";
 
-export default function Home() {
+export default function Home({products}) {
+
     return (
         <main>
             <SliderBanner/>
-
             <Wrapper>
                 {/* Heading and paragraph start */}
                 <div className="text-center max-w-[800px] mx-auto my-[50px] md:my-[80px]">
@@ -20,17 +22,25 @@ export default function Home() {
 
                 {/* Product List start */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-8 px-5 md:px-0 my-11 md:my-14">
-                    <ProductCard/>
-                    <ProductCard/>
-                    <ProductCard/>
-                    <ProductCard/>
-                    <ProductCard/>
-                    <ProductCard/>
-                    <ProductCard/>
-                    <ProductCard/>
+                    { 
+                        products?.data?.map((product) => (
+                            <ProductCard key={product?.id + 1} data={product}/>
+                        ))
+                    }
                 </div>
                 {/* Product List end */}
             </Wrapper>
         </main>
     )
+}
+
+
+export async function getStaticProps() {
+    const products = await fetchDataFromAPI("/api/products?populate=*");
+
+    return {
+        props: {
+            products, // products: products
+        }
+    };
 }
