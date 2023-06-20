@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
-const ProductCard = ({ data: {attributes: product, id}}) => {
+const ProductCard = ({ data: { attributes: product } }) => {
     return (
         <Link href={`/products/${product.slug}`} className='group'>
             <div className='overflow-hidden'>
