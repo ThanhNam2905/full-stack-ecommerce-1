@@ -9,18 +9,10 @@ const data = [
     { id: 1, name: "Contact", url: '/contact' },
 ];
 
-const subMenuData = [
-    { id: 1, name: "Jordan", doc_count: 11 },
-    { id: 2, name: "Sneakers", doc_count: 8 },
-    { id: 3, name: "Running shoes", doc_count: 64 },
-    { id: 1, name: "Football shoes", doc_count: 107 }
-]
-
-
-const NavigationMobileMenu = ({ showCategoryMenu, setShowCategoryMenu, setMobileMenu }) => {
+const NavigationMobileMenu = ({ showCategoryMenu, setShowCategoryMenu, setMobileMenu, categories }) => {
     return (
         <nav>
-            <ul className='flex flex-col md:hidden absolute top-[50px] left-0 w-full h-[calc(100vh -50px)] bg-white text-gray-950 font-bold border-t'>
+            <ul className='flex flex-col md:hidden absolute top-[50px] left-0 w-full h-[calc(100vh-50px)] bg-white text-gray-950 font-bold border-t'>
                 {
                     data.map((item, index) => {
                         return (
@@ -35,18 +27,18 @@ const NavigationMobileMenu = ({ showCategoryMenu, setShowCategoryMenu, setMobile
 
                                         { showCategoryMenu &&
                                             <ul className='bg-black/[0.05] -mx-5 my-4'>
-                                                { subMenuData.map((submenu, index) => {
+                                                { categories?.map(({attributes: category, id}) => {
                                                         return (
                                                             <Link 
-                                                                href={"/"} 
-                                                                key={index}
+                                                                href={`/category/${category.slug}`} 
+                                                                key={id}
                                                                 onClick={() => {
                                                                     setShowCategoryMenu(false)
                                                                     setMobileMenu(false)
                                                                 }}>
                                                                 <li className='py-4 px-8 flex justify-between border-t'>
-                                                                    <span>{submenu.name}</span>
-                                                                    <span className='text-gray-400 text-[14px]'>({submenu.doc_count})</span>
+                                                                    <span>{category.nameCategory}</span>
+                                                                    <span className='text-gray-400 text-[14px]'>({category.products.data.length})</span>
                                                                 </li>
                                                             </Link>
                                                         )

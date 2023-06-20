@@ -6,6 +6,7 @@ import { BsHeart, BsCart2  } from "react-icons/bs";
 import { BiMenuAltRight } from "react-icons/bi";
 import { VscChromeClose } from "react-icons/vsc";
 import NavigationMobileMenu from './NavigationMobileMenu';
+import { fetchDataFromAPI } from '@/utils/api';
 
 
 const Header = () => {
@@ -13,6 +14,7 @@ const Header = () => {
     const [showCategoryMenu, setShowCategoryMenu] = useState(false);
     const [show, setShow] = useState("translate-y-0");
     const [lastScrollY, setLastScrollY] = useState(0);
+    const [categories, setCategories] = useState(null);
 
     const controlNavbar = () => {
         if(window.scrollY > 200) {
@@ -37,9 +39,18 @@ const Header = () => {
         };
     }, [lastScrollY]);
 
+    useEffect(() => {
+        fetchDataCategories();
+    }, []);
+
+    const fetchDataCategories = async() => {
+        const { data } = await fetchDataFromAPI("/api/categories?populate=*");
+        setCategories(data);
+    }
+
     return (
         <header className={`w-full h-[50px] md:h-[80px] bg-white flex items-center justify-center 
-            sticky z-20 top-0 transition-transform duration-300 ${show}`}>
+            sticky z-[999] top-0 transition-transform duration-300 ${show}`}>
             <Wrapper className="flex items-center justify-between h-[60px]">
                 <Link href={"/"}>
                     <img src="/assets/logo.svg" alt="Logo Website" 
@@ -49,6 +60,7 @@ const Header = () => {
                 <NavigationMenu 
                     showCategoryMenu={showCategoryMenu} 
                     setShowCategoryMenu={setShowCategoryMenu}
+                    categories={categories}
                 />
 
                 { mobileMenu && (
@@ -56,6 +68,7 @@ const Header = () => {
                         showCategoryMenu={showCategoryMenu}
                         setShowCategoryMenu={setShowCategoryMenu}
                         setMobileMenu={setMobileMenu}
+                        categories={categories}
                     />)
                 }
 

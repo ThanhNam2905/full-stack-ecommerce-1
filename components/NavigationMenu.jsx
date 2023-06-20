@@ -9,15 +9,7 @@ const data = [
     { id: 1, name: "Contact", url: '/contact' },
 ];
 
-const subMenuData = [
-    { id: 1, name: "Jordan", doc_count: 11 },
-    { id: 2, name: "Sneakers", doc_count: 8 },
-    { id: 3, name: "Running shoes", doc_count: 64 },
-    { id: 1, name: "Football shoes", doc_count: 107 }
-]
-
-
-const NavigationMenu = ({ showCategoryMenu, setShowCategoryMenu }) => {
+const NavigationMenu = ({ showCategoryMenu, setShowCategoryMenu, categories }) => {
     return (
         <nav className='hidden md:block'>
             <ul className='flex items-center gap-8 font-medium text-gray-950 capitalize'>
@@ -34,15 +26,15 @@ const NavigationMenu = ({ showCategoryMenu, setShowCategoryMenu }) => {
 
                                         { showCategoryMenu &&
                                             <ul className='bg-white absolute top-7 left-0 min-w-[250px] p-2 shadow-lg rounded-md'>
-                                                { subMenuData.map((submenu, index) => {
+                                                { categories?.map(({attributes: category, id}) => {
                                                         return (
                                                             <Link 
-                                                                href={"/"} 
-                                                                key={index}
+                                                                href={`/category/${category.slug}`}
+                                                                key={id}
                                                                 onClick={() => setShowCategoryMenu(false)}>
                                                                 <li className='h-12 flex items-center justify-between px-3 cursor-pointer rounded-md transition-all ease-linear duration-300 hover:bg-black/[0.1]'>
-                                                                    <span>{submenu.name}</span>
-                                                                    <span className='text-gray-400 text-[14px]'>({submenu.doc_count})</span>
+                                                                    <span>{category.nameCategory}</span>
+                                                                    <span className='text-gray-400 text-[14px]'>({category.products.data.length})</span>
                                                                 </li>
                                                             </Link>
                                                         )
