@@ -8,11 +8,30 @@ import { useState } from 'react'
 import { BsHeart, BsCart2  } from "react-icons/bs"
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
 
+import { useSelector, useDispatch } from 'react-redux'
+import { addToCart } from '@/store/cartSlice'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const ProductDetail = ({ product, products }) => {
 
     const productDetail = product?.data[0]?.attributes;
     const [showError, setShowError] = useState(false);
     const [selectedSize, setSelectedSize] = useState();
+
+    const dispatch = useDispatch();
+    const notify = () => {
+        toast.success('Add to cart successfully, please check your cart', {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+        });
+    }
 
     // Handler User Add Products to Cart
     const handlerAddToCart = () => {
@@ -23,10 +42,21 @@ const ProductDetail = ({ product, products }) => {
                 behavior: "smooth"
             })
         }
+        else {
+            dispatch(
+                addToCart({
+                    ...product?.data?.[0],
+                    oneQuantityPrice: productDetail.priceProduct,
+                    selectedSize
+                })
+            );
+            notify();
+        }
     }
 
     return (
         <div className='w-full md:my-20'>
+            <ToastContainer/>
             <Wrapper>
                 <div className='flex flex-col lg:flex-row md:px-10 gap-[50px] lg:gap-[80px]'>
                     {/* Left column start */}
@@ -38,7 +68,7 @@ const ProductDetail = ({ product, products }) => {
                     {/* Right column start */}
                     <div className='flex-[1] py-3'>
                         {/* Product Name */}
-                        <div className='text-[32px] font-semibold mb-3'>
+                        <div className='text-[32px] font-semibold mb-3 leading-tight'>
                             {productDetail.nameProduct}
                         </div>
                         {/* Product Subtitle */}
