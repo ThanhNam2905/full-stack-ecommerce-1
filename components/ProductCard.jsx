@@ -5,7 +5,7 @@ import React from 'react'
 
 const ProductCard = ({ data: { attributes: product } }) => {
     return (
-        <Link href={`/products/${product.slug}`} className='group'>
+        <Link href={`/product/${product.slug}`} className='group'>
             <div className='overflow-hidden'>
                 <Image
                     src={product.thumbnailProduct.data.attributes.url}
@@ -20,22 +20,19 @@ const ProductCard = ({ data: { attributes: product } }) => {
                 <p className='text-base font-medium text-black/[0.5] mt-1 mb-1.5'>{product.subTitle}</p>
                 <div className='flex items-center mt-1'>
                     <p className='mr-3 text-base font-semibold'>${product.priceProduct}</p>
-                    { 
-                        product.original_priceProduct && (
-                            <>
-                                <p className='text-[15px] line-through text-gray-500 font-medium'>
-                                    ${product.original_priceProduct}
-                                </p>
-                                <p className='ml-auto text-base font-semibold text-green-500'>
-                                    {getDiscountPricePercentage(
-                                        product.original_priceProduct,
-                                        product.priceProduct
-                                    )} % off
-                                </p>
-                            </>
-                        )
+                    { product.original_priceProduct && (
+                        <>
+                            <p className='text-[15px] line-through text-gray-500 font-medium'>
+                                ${product.original_priceProduct}
+                            </p>
+                            <p className='ml-auto text-base font-semibold text-green-500'>
+                                {getDiscountPricePercentage(
+                                    product.original_priceProduct,
+                                    product.priceProduct
+                                )} % off
+                            </p>
+                        </>)
                     }
-                    
                 </div>
             </div>
         </Link>
