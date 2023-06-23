@@ -7,7 +7,7 @@ import { fetchDataFromAPI } from '@/utils/api';
 import NavigationMenu from '@/components/NavigationMenu';
 import Wrapper from '@/components/Wrapper';
 import NavigationMobileMenu from '@/components/NavigationMobileMenu';
-
+import { useSelector } from 'react-redux'
 
 const Header = () => {
     const [mobileMenu, setMobileMenu] = useState(false);
@@ -47,6 +47,8 @@ const Header = () => {
         const { data } = await fetchDataFromAPI("/api/categories?populate=*");
         setCategories(data);
     }
+
+    const { cartItems } = useSelector((state) => state.cart);
 
     return (
         <header className={`w-full h-[50px] md:h-[80px] bg-white flex items-center justify-center 
@@ -89,10 +91,13 @@ const Header = () => {
                         <div className='relative flex items-center justify-center cursor-pointer w-8 md:w-12 h-8 md:h-12 
                             transition-all ease-linear duration-300 hover:bg-black/[0.1] rounded-full'>
                             <BsCart2 className='text-[16px] md:text-[22px]'/>
-                            <span className='h-[16px] md:h-[19px] min-w-[16px] md:min-w-[19px] absolute top-1 left-5 md:left-7 bg-red-600 text-white
-                                flex items-center justify-center text-[11px] md:text-[12px] rounded-full px-[2px] md:px-[5px]'>
-                                    5
-                            </span>
+                            { cartItems.length > 0 && (
+                                    <span className='h-[16px] md:h-[19px] min-w-[16px] md:min-w-[19px] absolute top-1 left-5 md:left-7 bg-red-600 text-white
+                                        flex items-center justify-center text-[11px] md:text-[12px] rounded-full px-[2px] md:px-[5px]'>
+                                            {cartItems.length}
+                                    </span>
+                                )
+                            }
                         </div>
                     </Link>
                     
