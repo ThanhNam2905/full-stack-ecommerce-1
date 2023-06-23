@@ -46,8 +46,7 @@ const CategoryPage = ({ category, products, slug }) => {
 
                 {/* Product List start */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-8 px-5 md:px-0 my-11 md:my-14">
-                    {
-                        data?.data?.map((product) => (
+                    {   data?.data?.map((product) => (
                             <ProductCard key={product?.id} data={product} />
                         ))
                     }
@@ -100,7 +99,9 @@ export async function getStaticPaths() {
 // `getStaticPaths` requires using `getStaticProps`
 export async function getStaticProps({ params: { slug } }) {
     const category = await fetchDataFromAPI(`/api/categories?filters[slug][$eq]=${slug}`);
-    const products = await fetchDataFromAPI(`/api/products?populate=*&[filters][categories][slug][$eq]=${slug}&[pagination][page]=1&[pagination][pageSize]=${maxResult}`);
+    const products = await fetchDataFromAPI(
+        `/api/products?populate=*&[filters][categories][slug][$eq]=${slug}&[pagination][page]=1&[pagination][pageSize]=${maxResult}`
+    );
 
     return {
         props: {
