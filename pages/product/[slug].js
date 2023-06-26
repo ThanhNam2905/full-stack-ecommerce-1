@@ -183,7 +183,6 @@ export async function getStaticPaths() {
             slug: item.attributes.slug
         }
     }));
-
     return {
         paths,
         fallback: false
@@ -194,7 +193,6 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params: { slug } }) {
     const product = await fetchDataFromAPI(`/api/products?populate=*&filters[slug][$eq]=${slug}`);
     const products = await fetchDataFromAPI(`/api/products?populate=*&[filters][slug][$ne]=${slug}`);
-
     return {
         props: {
             product,
