@@ -8,10 +8,9 @@ import { useState } from 'react'
 import { BsHeart, BsCart2  } from "react-icons/bs"
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
 
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { addToCart } from '@/store/cartSlice'
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify'
 
 const ProductDetail = ({ product, products }) => {
 
@@ -46,7 +45,7 @@ const ProductDetail = ({ product, products }) => {
             dispatch(
                 addToCart({
                     ...product?.data?.[0],
-                    oneQuantityPrice: productDetail.priceProduct,
+                    totalPriceCartItem: productDetail.priceProduct,
                     selectedSize
                 })
             );
@@ -56,7 +55,6 @@ const ProductDetail = ({ product, products }) => {
 
     return (
         <div className='w-full md:my-20'>
-            <ToastContainer/>
             <Wrapper>
                 <div className='flex flex-col lg:flex-row md:px-10 gap-[50px] lg:gap-[80px]'>
                     {/* Left column start */}
@@ -159,11 +157,11 @@ const ProductDetail = ({ product, products }) => {
                         {/* Product Description */}
                         <div className='mb-5'>
                             <h4 className='font-bold text-lg mb-5'>Product Details</h4>
-                            <p className='markdown text-md mb-3 leading-7'>
+                            <div className='markdown text-md mb-3 leading-7'>
                                 <ReactMarkdown>
                                     {productDetail.descriptionProduct}
                                 </ReactMarkdown>
-                            </p>
+                            </div>
                         </div>
                     </div>
                     {/* Right column end */}

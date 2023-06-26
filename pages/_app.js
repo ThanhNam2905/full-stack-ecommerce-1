@@ -5,6 +5,8 @@ import Head from 'next/head';
 
 import { Provider } from 'react-redux'
 import store from '@/store/store';
+import { ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function App({ Component, pageProps }) {
     return (
@@ -30,6 +32,7 @@ export default function App({ Component, pageProps }) {
             </Head>
 
             <Provider store={store}>
+                <ToastContainer/>
                 <Header/>
                     <Component {...pageProps} />
                 <Footer/>
