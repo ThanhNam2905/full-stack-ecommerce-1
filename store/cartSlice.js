@@ -15,6 +15,8 @@ export const cartSlice = createSlice({
                 if(item.id === newItem.id && 
                     item.selectedSize === newItem.selectedSize) {
                         item.quantity++;
+                        item.totalPriceCartItem = item.attributes.priceProduct * item.quantity;
+                        state.cartItems = [...state.cartItems];
                         isNewItem = false;
                         break;
                 }
@@ -22,11 +24,26 @@ export const cartSlice = createSlice({
             if(isNewItem) {
                 state.cartItems.push({ ...newItem, quantity: 1})
             }
+        },
+        updateCartItem: (state, action) => {
+            state.cartItems = state.cartItems.map((item, index) => {
+                if(index === action.payload.id) {
+                    if(action.payload.key === "quantity") {
+                        item.totalPriceCartItem = item.attributes.priceProduct * action.payload.value;
+                    }
+                    return { ...item, [action.payload.key]: action.payload.value };
+                }
+                return item;
+            })
+        },
+        removeCartItem: (state, action) => {
+            console.log("action.payload.id ==>", action.payload.id);
+            state.cartItems = state.cartItems.filter((item, index) => index !== action.payload.id)
         }
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { addToCart } = cartSlice.actions
+export const { addToCart, updateCartItem, removeCartItem } = cartSlice.actions
 
 export default cartSlice.reducer
