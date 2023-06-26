@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import Link from 'next/link';
 import Image from 'next/image';
 import Wrapper from '@/components/Wrapper';
@@ -6,12 +6,42 @@ import CartItems from '@/components/CartItems';
 import { useSelector } from 'react-redux'
 import { BsCurrencyDollar } from 'react-icons/bs';
 
-const CartPage = () => {
+import {loadStripe} from '@stripe/stripe-js';
+import { makePaymentRequest } from '@/utils/api';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 
+// Make sure to call `loadStripe` outside of a component’s render to avoid
+// recreating the `Stripe` object on every render.
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
+
+const CartPage = () => {
     const { cartItems } = useSelector((state) => state.cart);
+
     const subTotalPrice = useMemo(() => {
         return cartItems.reduce((total, item) => total + item.totalPriceCartItem, 0);
-    }, [cartItems])
+    }, [cartItems]);
+
+    const subTotalQuantity = useMemo(() => {
+        return cartItems.reduce((total, item) => total + item.quantity, 0);
+    }, [cartItems]);
+
+    const [loading, setLoading] = useState(false);
+
+    const handlePayment = async () => {
+        try {
+            setLoading(true);
+            const stripe = await stripePromise;
+            const res = await makePaymentRequest("/api/orders", {
+                products: cartItems,
+            });
+            await stripe.redirectToCheckout({
+                sessionId: res.stripeSession.id,
+            });
+        } catch (error) {
+            setLoading(false);
+            console.log(error);
+        }
+    };
 
     return (
         <div className='w-full md:my-20'>
@@ -41,15 +71,21 @@ const CartPage = () => {
                             <div className='flex-[1] '>
                                 <h5 className='text-lg font-semibold capitalize'>Summary</h5>
                                 <div className='mt-5 py-5 px-6 bg-black/[0.05] rounded-xl'>
-                                    <div className='flex items-center justify-between border-b border-gray-300/80 pb-4'>
-                                        <h5 className='text-base md:text-lg uppercase font-medium'>Subtotal</h5>
-                                        <p className='flex items-center text-base md:text-lg uppercase font-medium'>
+                                    <div className='flex items-center justify-between pb-4'>
+                                        <h5 className='text-base md:text-lg font-medium'>Subtotal</h5>
+                                        <p className='flex items-center text-base md:text-lg font-medium'>
                                             <BsCurrencyDollar size={18}/>
                                             {new Intl.NumberFormat('en-IN', {
                                                     currencySign: 'accounting',
                                                 })
                                                 .format(subTotalPrice)
                                             }.00
+                                        </p>
+                                    </div>
+                                    <div className='flex items-center justify-between border-b border-gray-300/80 pb-4'>
+                                        <h5 className='text-base md:text-lg font-medium'>Item</h5>
+                                        <p className='flex items-center text-base md:text-lg font-medium'>
+                                            { subTotalQuantity }
                                         </p>
                                     </div>
                                     <div className='pt-4 text-[12px] md:text-sm'>
@@ -59,9 +95,17 @@ const CartPage = () => {
                                         </em>
                                     </div>
                                 </div>
-                                <button className='w-full mt-6 py-4 px-9 bg-black text-white font-oswald text-lg font-medium rounded-full
-                                    transition-all ease-linear duration-300 active:scale-[0.9] hover:opacity-80'>
+                                <button 
+                                    className={`flex items-center justify-center w-full mt-6 py-4 px-9 bg-black text-white font-oswald text-lg font-medium rounded-full
+                                    transition-all ease-linear duration-300 active:scale-[0.9] hover:opacity-80 ${loading ? " !bg-black/[0.6]" : ""}`}
+                                    onClick={handlePayment}>
                                         Checkout
+                                        { loading &&(
+                                            <AiOutlineLoading3Quarters 
+                                                size={17}
+                                                className='animate-spin ml-3'    
+                                            />
+                                        )}
                                 </button>
                             </div>
                         </div>
