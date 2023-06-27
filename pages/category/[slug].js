@@ -93,7 +93,7 @@ export async function getStaticPaths() {
     console.log("paths ===>", paths);
 
     return {
-        paths: [paths],
+        paths,
         fallback: false,
     };
 }
