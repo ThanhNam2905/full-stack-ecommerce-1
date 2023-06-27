@@ -82,12 +82,12 @@ const CategoryPage = ({ category, products, slug }) => {
 export default CategoryPage
 
 export async function getStaticPaths() {
-    const category = await fetchDataFromAPI("/api/categories?populate=*");
-    const paths = category?.data?.map((c) => {
-        return {
-            params: {slug: c.attributes.slug.toString()}
-        }
-    });
+    const category = await fetchDataFromApi("/api/categories?populate=*");
+    const paths = category?.data?.map((c) => ({
+        params: {
+            slug: c.attributes.slug,
+        },
+    }));
 
     return {
         paths,
@@ -97,10 +97,10 @@ export async function getStaticPaths() {
 
 // `getStaticPaths` requires using `getStaticProps`
 export async function getStaticProps({ params: { slug } }) {
-    const category = await fetchDataFromAPI(
+    const category = await fetchDataFromApi(
         `/api/categories?filters[slug][$eq]=${slug}`
     );
-    const products = await fetchDataFromAPI(
+    const products = await fetchDataFromApi(
         `/api/products?populate=*&[filters][categories][slug][$eq]=${slug}&pagination[page]=1&pagination[pageSize]=${maxResult}`
     );
 
