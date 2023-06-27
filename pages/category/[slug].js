@@ -3,7 +3,6 @@ import Wrapper from '@/components/Wrapper';
 import { fetchDataFromAPI } from '@/utils/api';
 import React, { useState, useEffect } from 'react'
 import useSWR from 'swr'
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 
@@ -86,7 +85,7 @@ export async function getStaticPaths() {
     const category = await fetchDataFromAPI("/api/categories?populate=*");
     const paths = category?.data?.map((c) => ({
         params: {
-            slug: c.attributes.slug,
+            slug: c.attributes.slug.toString(),
         },
     }));
 
