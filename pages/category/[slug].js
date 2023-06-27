@@ -3,7 +3,6 @@ import Wrapper from '@/components/Wrapper';
 import { fetchDataFromAPI } from '@/utils/api';
 import React, { useState, useEffect } from 'react'
 import useSWR from 'swr'
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 
@@ -83,31 +82,33 @@ const CategoryPage = ({ category, products, slug }) => {
 export default CategoryPage
 
 export async function getStaticPaths() {
-    const categories = await fetchDataFromAPI("/api/categories?populate=*");
-    const paths = categories?.data?.map((item) => ({
-        params: {
-            slug: item.attributes.slug
+    const category = await fetchDataFromAPI("/api/categories?populate=*");
+    const paths = category?.data?.map((c) => {
+        return {
+            params: {slug: c.attributes.slug.toString()}
         }
-    }));
+    });
 
     return {
         paths,
-        fallback: false
+        fallback: false,
     };
 }
 
 // `getStaticPaths` requires using `getStaticProps`
 export async function getStaticProps({ params: { slug } }) {
-    const category = await fetchDataFromAPI(`/api/categories?filters[slug][$eq]=${slug}`);
+    const category = await fetchDataFromAPI(
+        `/api/categories?filters[slug][$eq]=${slug}`
+    );
     const products = await fetchDataFromAPI(
-        `/api/products?populate=*&[filters][categories][slug][$eq]=${slug}&[pagination][page]=1&[pagination][pageSize]=${maxResult}`
+        `/api/products?populate=*&[filters][categories][slug][$eq]=${slug}&pagination[page]=1&pagination[pageSize]=${maxResult}`
     );
 
     return {
         props: {
             category,
             products,
-            slug
-        }
+            slug,
+        },
     };
 }
